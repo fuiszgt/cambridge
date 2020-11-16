@@ -1,0 +1,3 @@
+
+java -classpath ./out tick1.Tick1 --input test1.xml --output output.png
+javac -d ./out src/uk/ac/cam/cl/gfxintro/gtf23/tick1/*.java
