@@ -3,6 +3,8 @@ package tick1;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import static java.lang.Double.max;
+
 public class Renderer {
 	
 	// The width and height of the image in pixels
@@ -68,7 +70,7 @@ public class Renderer {
 		double k_s = object.getPhong_kS();
 		double alpha = object.getPhong_alpha();
 
-		// TODO: Add ambient light term to start with 
+		colourToReturn = I_a.scale(C_diff);
 
 		// Loop over each point light source
 		List<PointLight> pointLights = scene.getPointLights();
@@ -80,11 +82,18 @@ public class Renderer {
 			ColorRGB C_spec = light.getColour();
 			ColorRGB I = light.getIlluminationAt(distanceToLight);
 
-			// TODO: Calculate L, V, R
-			// TODO: Calculate ColorRGB diffuse and ColorRGB specular terms
-			// TODO: Add these terms to colourToReturn
+			// Calculate L, V, R
+			Vector3 L = light.getPosition().subtract(P).normalised(); //normalized vector from point of intersection to light source
+			Vector3 V = P.subtract(O).normalised(); //normalized vector from position to origin of ray
+			Vector3 R = L.subtract(N.scale(2*L.dot(N)));
 
-			colourToReturn = object.getColour(); // TODO: remove this line
+			// Calculate ColorRGB diffuse and ColorRGB specular terms
+			ColorRGB diffuse = C_diff.scale(k_d).scale(I).scale(max(0.0, N.dot(L)));
+			ColorRGB specular = C_spec.scale(k_s).scale(I).scale(max(0, Math.pow(R.dot(V), alpha)));
+
+			//  Add these terms to colourToReturn
+
+			colourToReturn = colourToReturn.add(diffuse.add(specular));
 
 
 		}
