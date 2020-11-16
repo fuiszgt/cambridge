@@ -58,7 +58,7 @@ public class Renderer {
 	 * relative to ray originating at O
 	 */
 	private ColorRGB illuminate(Scene scene, SceneObject object, Vector3 P, Vector3 N, Vector3 O) {
-	   
+
 		ColorRGB colourToReturn = new ColorRGB(0);
 
 		ColorRGB I_a = scene.getAmbientLighting(); // Ambient illumination intensity
@@ -87,6 +87,18 @@ public class Renderer {
 			Vector3 V = P.subtract(O).normalised(); //normalized vector from position to origin of ray
 			Vector3 R = L.subtract(N.scale(2*L.dot(N)));
 
+			// Cast shadow ray
+			Ray shadowRay = new Ray(P.add(N.scale(EPSILON)), L);
+
+			// Determine if shadowRay intersects with an object
+			RaycastHit blocker = scene.findClosestIntersection(shadowRay);
+			if(blocker.getObjectHit() != null){
+				if(blocker.getDistance() < distanceToLight){
+					continue;
+				}
+			}
+
+			// TODO: If it does not, add diffuse/specular components
 			// Calculate ColorRGB diffuse and ColorRGB specular terms
 			ColorRGB diffuse = C_diff.scale(k_d).scale(I).scale(max(0, N.dot(L)));
 			ColorRGB specular = C_spec.scale(k_s).scale(I).scale(Math.pow(max(0, R.dot(V)),alpha));
