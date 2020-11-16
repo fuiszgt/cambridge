@@ -88,8 +88,8 @@ public class Renderer {
 			Vector3 R = L.subtract(N.scale(2*L.dot(N)));
 
 			// Calculate ColorRGB diffuse and ColorRGB specular terms
-			ColorRGB diffuse = C_diff.scale(k_d).scale(I).scale(max(0.0, N.dot(L)));
-			ColorRGB specular = C_spec.scale(k_s).scale(I).scale(max(0, Math.pow(R.dot(V), alpha)));
+			ColorRGB diffuse = C_diff.scale(k_d).scale(I).scale(max(0, N.dot(L)));
+			ColorRGB specular = C_spec.scale(k_s).scale(I).scale(Math.pow(max(0, R.dot(V)),alpha));
 
 			//  Add these terms to colourToReturn
 
