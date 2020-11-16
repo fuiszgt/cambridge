@@ -47,9 +47,14 @@ public class Plane extends SceneObject {
 		Vector3 Q = this.point;
 		Vector3 N = this.normal;
 
-		// TODO: Calculate ray parameter s at intersection
-		// TODO: If intersection occurs behind camera, return empty RaycastHit;
+		// Calculate ray parameter s at intersection
+		double s = Q.subtract(O).dot(N) / D.dot(N);
+
+		//  If intersection occurs behind camera, return empty RaycastHit;
 		//			otherwise return RaycastHit describing point of intersection
+		if(s > 0){
+			return new RaycastHit(this, s, O.add(D.scale(s)), N);
+		}
 
 		return new RaycastHit(); 
 }
