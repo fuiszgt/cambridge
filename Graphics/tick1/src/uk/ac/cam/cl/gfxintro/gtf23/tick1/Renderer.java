@@ -2,6 +2,7 @@ package tick1;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Vector;
 
 import static java.lang.Double.max;
 
@@ -45,13 +46,38 @@ public class Renderer {
         Vector3 P = closestHit.getLocation();
         Vector3 N = closestHit.getNormal();
         Vector3 O = ray.getOrigin();
-
+		Vector3 V = ray.getDirection().normalised();
      	// Illuminate the surface
 
-     	return this.illuminate(scene, object, P, N, O);
+		// Calculate direct illumination at the point
+		ColorRGB directIllumination = this.illuminate(scene, object, P, N, O);
 
+		// Get reflectivity of object
+		double reflectivity = object.getReflectivity();
+		if(bouncesLeft == 0 || reflectivity == 0) {
+			// Base case - if no bounces left or non-reflective surface
+			return directIllumination;
+		}else{
+			// Recursive case
+			ColorRGB reflectedIllumination;
 
+			// Calculate the direction R of the bounced ray
+			Vector3 R = V.reflectIn(N).scale(-1);
+
+			// Spawn a reflected Ray with bias
+			Ray reflectedRay= new Ray(P.add(N.scale(EPSILON)), R);
+
+			// Calculate reflectedIllumination by tracing reflectedRay
+			reflectedIllumination = trace(scene, reflectedRay, bouncesLeft-1);
+
+			// Scale direct and reflective illumination to conserve light
+			directIllumination = directIllumination.scale(1.0 -reflectivity);
+			reflectedIllumination = reflectedIllumination.scale(reflectivity);
+			// Return total illumination
+			return directIllumination.add(reflectedIllumination);
+		}
 	}
+
 
 	/*
 	 * Illuminate a surface on and object in the scene at a given position P and surface normal N,
@@ -84,8 +110,8 @@ public class Renderer {
 
 			// Calculate L, V, R
 			Vector3 L = light.getPosition().subtract(P).normalised(); //normalized vector from point of intersection to light source
-			Vector3 V = P.subtract(O).normalised(); //normalized vector from position to origin of ray
-			Vector3 R = L.subtract(N.scale(2*L.dot(N)));
+			Vector3 V = P.subtract(O).normalised(); //normalized vector from position of intersection to origin of ray
+			Vector3 R = L.reflectIn(N.normalised()).scale(-1);
 
 			// Cast shadow ray
 			Ray shadowRay = new Ray(P.add(N.scale(EPSILON)), L);
