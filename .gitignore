@@ -3,6 +3,8 @@
 /Math
 /Graphics/tick1/out/
 
+*/.idea*
+
 *.jpg
 *.jpeg
 *.png
