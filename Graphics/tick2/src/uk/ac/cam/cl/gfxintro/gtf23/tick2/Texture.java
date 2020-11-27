@@ -1,4 +1,4 @@
-package uk.ac.cam.cl.gfxintro.crsid.tick2;
+package uk.ac.cam.cl.gfxintro.gtf23.tick2;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
