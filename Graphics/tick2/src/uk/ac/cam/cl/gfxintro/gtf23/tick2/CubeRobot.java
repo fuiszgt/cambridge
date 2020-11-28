@@ -38,8 +38,11 @@ public class CubeRobot {
 	private Texture body_texture;		// Texture image to be used by the body shader
 	private Matrix4f body_transform;	// Transformation matrix of the body object
 	
-	// TODO: Add Component 2: Right Arm
-
+	// Component 2: Right Arm
+	private Mesh right_arm_mesh;				// Mesh of the right_arm
+	private ShaderProgram right_arm_shader;	// Shader to colour the right_arm mesh
+	private Texture right_arm_texture;		// Texture image to be used by the right_arm shader
+	private Matrix4f right_arm_transform;	// Transformation matrix of the right_arm object
 	
 	// Complete rest of the robot
 
@@ -69,12 +72,38 @@ public class CubeRobot {
 		body_texture.load("resources/cubemap.png");
 		
 		// Build Transformation Matrix
-		body_transform = new Matrix4f(); 
-		
-		// TODO: Scale the body transformation matrix
+		body_transform = new Matrix4f();
 
+		// Scale the body transformation matrix
+		body_transform.scale(1,2,1);
+
+		//Create right arm
+
+		// TODO: extract this into a method
+
+		// Initialise Geometry
+		right_arm_mesh = new CubeMesh();
+
+		// Initialise Shader
+		right_arm_shader = new ShaderProgram(new Shader(GL_VERTEX_SHADER, VSHADER_FN), new Shader(GL_FRAGMENT_SHADER, FSHADER_FN), "colour");
+		// Tell vertex shader where it can find vertex positions. 3 is the dimensionality of vertex position
+		// The prefix "oc_" means object coordinates
+		right_arm_shader.bindDataToShader("oc_position", right_arm_mesh.vertex_handle, 3);
+		// Tell vertex shader where it can find vertex normals. 3 is the dimensionality of vertex normals
+		right_arm_shader.bindDataToShader("oc_normal", right_arm_mesh.normal_handle, 3);
+		// Tell vertex shader where it can find texture coordinates. 2 is the dimensionality of texture coordinates
+		right_arm_shader.bindDataToShader("texcoord", right_arm_mesh.tex_handle, 2);
+
+		// Initialise Texturing
+		right_arm_texture = new Texture();
+		right_arm_texture.load("resources/cubemap.png");
+
+		// Build Transformation Matrix
+		right_arm_transform = new Matrix4f();
+
+		// Scale the right_arm transformation matrix
 		
-		// TODO: Create right arm node
+		right_arm_transform.translate(0,0.25f,2f).rotateAffineXYZ(-0.523599f,0, 0).scale(0.25f,2,0.25f);
 
 		
 		// TODO: Initialise Texturing
@@ -103,10 +132,10 @@ public class CubeRobot {
 
 		
 		renderMesh(camera, body_mesh, body_transform, body_shader, body_texture);
-		
+
 		// TODO: Chain transformation matrices of the arm and body (Scene Graph)
 		// TODO: Render Arm.
-
+		renderMesh(camera, right_arm_mesh, right_arm_transform, right_arm_shader, right_arm_texture);
 		
 		//TODO: Render rest of the robot
 

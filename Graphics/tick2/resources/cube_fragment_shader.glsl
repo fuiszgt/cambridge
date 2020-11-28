@@ -19,7 +19,7 @@ vec3 tonemap(vec3 linearRGB)
     return pow(linearRGB/L_white, vec3(inverseGamma)); // Display encoding - a gamma
 }
 
-const vec3 P_1 = vec3(1,1,1);
+const vec3 P_1 = vec3(1,0,0);
 const vec3 I_1 = vec3(0.3, 0.3, 0.9); //bright blue light source
 const vec3 I_a = vec3(0.6, 0.6, 0.6); //White ambient light
 const vec3 k_a = vec3(0.5, 0.5, 0.5); //grey cube
