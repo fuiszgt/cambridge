@@ -141,8 +141,9 @@ public class CubeRobot {
 		
 		// Transformation by a nonorthogonal matrix does not preserve angles
 		// Thus we need a separate transformation matrix for normals
-		Matrix3f normal_matrix = new Matrix3f();
-		//TODO: Calculate normal transformation matrix
+
+		//It is the transpose of the inverse of the model matrix (But only the upper-3 coordinates.)
+		Matrix3f normal_matrix = new Matrix3f(modelMatrix).invert().transpose();
 		
 		shader.uploadMatrix3f(normal_matrix, "normal_matrix");
 		
