@@ -76,7 +76,6 @@ public class CubeRobot {
 
 		// Scale the body transformation matrix
 		body_transform.scale(1,2,1);
-
 		//Create right arm
 
 		// TODO: extract this into a method
@@ -102,8 +101,9 @@ public class CubeRobot {
 		right_arm_transform = new Matrix4f();
 
 		// Scale the right_arm transformation matrix
-		
-		right_arm_transform.translate(0,0.25f,2f).rotateAffineXYZ(-0.523599f,0, 0).scale(0.25f,2,0.25f);
+		right_arm_transform.rotateAffineXYZ(-0.523599f,0, 0).scale(0.25f,2,0.25f).translate(0,-1,0);
+		Matrix4f arm_position = new Matrix4f().translate(0,2,1);
+		right_arm_transform = arm_position.mul(right_arm_transform);
 
 		
 		// TODO: Initialise Texturing
