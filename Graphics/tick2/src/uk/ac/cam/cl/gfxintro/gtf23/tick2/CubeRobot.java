@@ -43,12 +43,19 @@ public class CubeRobot {
 	CubeNode body, rArm, lArm, rLeg, lLeg, head;
 
 	class CubeNode {
-		public CubeNode() {
+
+		public static final String RESOURCES_CUBEMAP_PNG = "resources/cubemap.png";
+
+		public CubeNode(){
+			this(RESOURCES_CUBEMAP_PNG);
+		}
+
+		public CubeNode(String textureFile) {
 			// Initialise Shader
 			mesh = new CubeMesh();
 			// Initialise Texturing
 			texture = new Texture();
-			texture.load("resources/cubemap.png");
+			texture.load(textureFile);
 
 			// Initialise Shader
 			shader = new ShaderProgram(new Shader(GL_VERTEX_SHADER, VSHADER_FN), new Shader(GL_FRAGMENT_SHADER, FSHADER_FN), "colour");
@@ -129,7 +136,7 @@ public class CubeRobot {
 		rArm = new CubeNode();
 		lArm = new CubeNode();
 
-		head = new CubeNode();
+		head = new CubeNode("resources/cubemap_head.png");
 
 		rArm.setModel(new Matrix4f().rotateAffineXYZ(0,0, -0.523599f).scale(0.25f,2,0.25f).translate(0,-1,0));
 		lArm.setModel(new Matrix4f().rotateAffineXYZ(0,0, 0.523599f).scale(0.25f,2,0.25f).translate(0,-1,0));
