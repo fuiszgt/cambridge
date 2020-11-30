@@ -135,7 +135,8 @@ public class CubeRobot {
 
 		rArm = new CubeNode();
 		lArm = new CubeNode();
-
+		lLeg = new CubeNode();
+		rLeg = new CubeNode();
 		head = new CubeNode("resources/cubemap_head.png");
 
 		rArm.setModel(new Matrix4f().rotateAffineXYZ(0,0, -0.523599f).scale(0.25f,2,0.25f).translate(0,-1,0));
@@ -144,11 +145,18 @@ public class CubeRobot {
 		rArm.setView(new Matrix4f().translate(-1,2,0));
 		lArm.setView(new Matrix4f().translate(1,2,0));
 
+		Matrix4f leg_shape = new Matrix4f().scale(0.25f,1.5f, 0.25f);
+		lLeg.setModel(leg_shape);
+		rLeg.setModel(leg_shape);
+		rLeg.setView(new Matrix4f().translate(0.5f,-2, 0));
+		lLeg.setView(new Matrix4f().translate(-0.5f,-2, 0));
 		head.setModel(new Matrix4f().scale(0.75f, 0.5f,0.75f));
 		head.setView(new Matrix4f().translate(0,2.5f,0));
 
 		body.append(rArm);
 		body.append(lArm);
+		body.append(lLeg);
+		body.append(rLeg);
 		body.append(head);
 
 
