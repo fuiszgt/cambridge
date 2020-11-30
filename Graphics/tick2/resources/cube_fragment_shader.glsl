@@ -19,10 +19,9 @@ vec3 tonemap(vec3 linearRGB)
     return pow(linearRGB/L_white, vec3(inverseGamma)); // Display encoding - a gamma
 }
 
-const vec3 P_1 = vec3(1,1,1);
-const vec3 I_1 = vec3(0.3, 0.3, 0.9); //bright blue light source
-const vec3 I_a = vec3(0.6, 0.6, 0.6); //White ambient light
-const vec3 k_a = vec3(0.5, 0.5, 0.5); //grey cube
+const vec3 P_1 = vec3(6,4,6);
+const vec3 I_1 = vec3(0.8, 0.8, 0.8); //bright white light source
+const vec3 I_a = vec3(0.1, 0.1, 0.1); //White ambient light
 const vec3 k_s = vec3(0.8, 0.8, 0.8); //specular reflection: white
 
 
@@ -30,14 +29,14 @@ void main()
 {
 	vec3 linear_color = vec3(0, 0, 0);
     vec3 k_d = vec3(texture(tex, frag_texcoord));
-
+    vec3 k_a = vec3(texture(tex, frag_texcoord));
     //vec3 R = normalize(P_1 - wc_frag_pos);
-    vec3 L = normalize(P_1); //infinitely far away;
+    vec3 L = normalize(P_1 - wc_frag_pos);
     vec3 R = (-1) * reflect(L, wc_frag_normal);
     vec3 V = normalize(wc_camera_position - wc_frag_pos);
     vec3 ambient = I_a * k_a;
     vec3 diffuse = I_1 * k_d * max(0, dot(L, wc_frag_normal));
-    vec3 specular = I_1 * k_s * pow(max(0, dot(R, V)), 10000);
+    vec3 specular = I_1 * k_s * pow(max(0, dot(R, V)), 100);
 
     linear_color = ambient + diffuse + specular;
 
