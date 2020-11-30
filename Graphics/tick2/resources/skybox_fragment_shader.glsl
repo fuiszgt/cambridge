@@ -18,7 +18,7 @@ vec3 tonemap(vec3 linearRGB)
 void main()
 {
 
-	// TODO: Sample the skybox to determine the color of the environment
+
 	vec3 linear_color = vec3(1,1,1);
 //BEGIN_STUDENT_SUBMISSION
 	linear_color = texture(skybox, frag_texcoord).rgb;
