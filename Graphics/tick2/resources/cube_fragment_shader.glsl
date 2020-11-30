@@ -19,18 +19,18 @@ vec3 tonemap(vec3 linearRGB)
     return pow(linearRGB/L_white, vec3(inverseGamma)); // Display encoding - a gamma
 }
 
-const vec3 P_1 = vec3(1,0,0);
+const vec3 P_1 = vec3(1,1,1);
 const vec3 I_1 = vec3(0.3, 0.3, 0.9); //bright blue light source
 const vec3 I_a = vec3(0.6, 0.6, 0.6); //White ambient light
 const vec3 k_a = vec3(0.5, 0.5, 0.5); //grey cube
-const vec3 k_d = vec3(0.4, 0.4, 0.4); //diffuse reflection: white
 const vec3 k_s = vec3(0.8, 0.8, 0.8); //specular reflection: white
 
 
 void main()
 {
 	vec3 linear_color = vec3(0, 0, 0);
-	// TODO: Calculate colour using Phong illumination model
+    vec3 k_d = vec3(texture(tex, frag_texcoord));
+
     //vec3 R = normalize(P_1 - wc_frag_pos);
     vec3 L = normalize(P_1); //infinitely far away;
     vec3 R = (-1) * reflect(L, wc_frag_normal);
@@ -40,7 +40,6 @@ void main()
     vec3 specular = I_1 * k_s * pow(max(0, dot(R, V)), 10000);
 
     linear_color = ambient + diffuse + specular;
-	// TODO: Sample the texture and replace diffuse surface colour (C_diff) with texel value
 
 
 	color = tonemap(linear_color);
