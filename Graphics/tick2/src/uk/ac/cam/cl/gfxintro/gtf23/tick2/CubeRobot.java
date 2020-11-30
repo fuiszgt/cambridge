@@ -40,7 +40,7 @@ public class CubeRobot {
 	
 	// Complete rest of the robot
 
-	CubeNode body, rArm, lArm, rLeg, lLeg;
+	CubeNode body, rArm, lArm, rLeg, lLeg, head;
 
 	class CubeNode {
 		public CubeNode() {
@@ -127,16 +127,22 @@ public class CubeRobot {
 		body.setModel(new Matrix4f().scale(1,2,1));
 
 		rArm = new CubeNode();
-
 		lArm = new CubeNode();
-		rArm.setModel(new Matrix4f().rotateAffineXYZ(-0.523599f,0, 0).scale(0.25f,2,0.25f).translate(0,-1,0));
-		lArm.setModel(new Matrix4f().rotateAffineXYZ(0.523599f,0, 0).scale(0.25f,2,0.25f).translate(0,-1,0));
 
-		rArm.setView(new Matrix4f().translate(0,2,1));
-		lArm.setView(new Matrix4f().translate(0,2,-1));
+		head = new CubeNode();
+
+		rArm.setModel(new Matrix4f().rotateAffineXYZ(0,0, -0.523599f).scale(0.25f,2,0.25f).translate(0,-1,0));
+		lArm.setModel(new Matrix4f().rotateAffineXYZ(0,0, 0.523599f).scale(0.25f,2,0.25f).translate(0,-1,0));
+
+		rArm.setView(new Matrix4f().translate(-1,2,0));
+		lArm.setView(new Matrix4f().translate(1,2,0));
+
+		head.setModel(new Matrix4f().scale(0.75f, 0.5f,0.75f));
+		head.setView(new Matrix4f().translate(0,2.5f,0));
 
 		body.append(rArm);
 		body.append(lArm);
+		body.append(head);
 
 
 
@@ -153,19 +159,10 @@ public class CubeRobot {
 	 * @param elapsedTime	- Time elapsed since the beginning of this program in millisecs
 	 */
 	public void render(Camera camera, float deltaTime, long elapsedTime) {
-//return 0;
 		body.transform(new Matrix4f().rotateAffineXYZ(0, 2.0f*(deltaTime),0));
-		rArm.transform(new Matrix4f().rotateAffineXYZ(0,0,2.0f*deltaTime));
+		rArm.transform(new Matrix4f().rotateAffineXYZ(2.0f*deltaTime,0,0));
 
-//		//renderMesh(camera, body_mesh, body_transform, body_shader, body_texture);
 		body.render(camera);
-
-		// TODO: Chain transformation matrices of the arm and body (Scene Graph)
-		// TODO: Render Arm.
-		//renderMesh(camera, right_arm_mesh, right_arm_transform, arm_shader, arm_texture);
-		
-		//TODO: Render rest of the robot
-
 	}
 	
 	/**
