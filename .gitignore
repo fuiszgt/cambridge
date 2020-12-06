@@ -3,10 +3,7 @@
 /Math
 /Graphics/tick1/out/
 
-Graphics/tick1/.idea/vcs.xml
-Graphics/tick2/.idea/
-Graphics/tick2/hs_err_pid24936.log
-Graphics/tick2/tick2.iml
+
 
 *.log
 *.jpg
@@ -17,4 +14,4 @@ Graphics/tick2/tick2.iml
 *.pdf
 *.zip
 *.iml
-*/.idea/
+**/.idea 
