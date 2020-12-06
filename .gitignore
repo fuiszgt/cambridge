@@ -14,3 +14,7 @@ Graphics/tick2/tick2.iml
 *.png
 *.gif
 *.class
+*.pdf
+*.zip
+*.iml
+*/.idea/
